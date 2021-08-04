@@ -1,0 +1,34 @@
+# How to download and install RH Ansible Engine https://access.redhat.com/articles/3174981
+---
+- name: Set up RHEL 8 environment for ansible install
+  hosts: <target_host>
+
+  tasks:
+
+    - name: Check system requirements
+
+
+    - name: Enable repos
+      community.general.redhat_subscription:
+        username:
+        password:
+        pool_ids: "{{ item }}"
+      loop: "{{ pool_ids }}"
+
+    - name: Manage RHSM repositories
+      community.general.rhsc_repository:
+        name: 
+          - rhel-8-for-x86_64-baseos-rpms
+          - rhel-8-for-x86_64-appstream-rpms
+          - ansible-"{{ version }}"-for-rhel-8-x86_64-rpms
+      
+
+    - name: Install packages
+      dnf:
+        name: 
+          - vim
+          - wget
+          - python3
+          - ansible
+          - libvirt-client
+          - bridge-utils
